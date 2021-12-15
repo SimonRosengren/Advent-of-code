@@ -52,16 +52,32 @@ for (let i = 2; i < input.length; i++) {
     }
 }
 
+// Part I
+
 let hasWinner = false;
 let counter = 0;
 while (!hasWinner) {
-    players.forEach((p, index) => {
+    players.forEach(p => {
         crossNumber(p, calls[counter]);
         if (hasBingo(p)) {
-            console.log(getFinalScore(calls[counter], p))
+            console.log('Part I: ' + getFinalScore(calls[counter], p));
             hasWinner = true;
         }
     })
     counter++;
 }
 
+// Part II
+let winner, lastCall;
+for (let i = 0; i < calls.length; i++) {
+    for (let j = players.length - 1; j >= 0; j--) {
+        crossNumber(players[j], calls[i]);
+        if (hasBingo(players[j])) {
+           winner = players[j];
+           players.splice(j, 1);
+           lastCall = calls[i]
+        }   
+    }
+}
+
+console.log('Part II: ' + getFinalScore(lastCall, winner));
