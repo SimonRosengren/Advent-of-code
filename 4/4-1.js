@@ -3,12 +3,65 @@ const input = utils.inputToStringArray('4/input.txt');
 const calls = input[0].split(',');
 let players = [];
 
+
+const hasBingo = player => {
+    for (let i = 0; i < player.rows.length; i++) {
+        let hStreak = 0;
+        let vStreak = 0;
+        for (let j = 0; j < player.rows[i].length; j++) {
+            if (player.rows[i][j] === 'x') hStreak++;
+            if (player.rows[j][i] === 'x') vStreak++;
+        }
+        if (hStreak === 5) return true;
+        if (vStreak === 5) return true;
+    }
+    return false;
+}
+
+const crossNumber = (player, number) => {
+    for (let i = 0; i < player.rows.length; i++) {
+        for (let j = 0; j < player.rows[i].length; j++) {
+            if (player.rows[i][j] === number) player.rows[i][j] = 'x';          
+        }
+    }
+}
+
+const getFinalScore = (lastCall, player) => {
+    let sum = 0;
+    for (let i = 0; i < player.rows.length; i++) {
+        for (let j = 0; j < player.rows[i].length; j++) {
+            if (player.rows[i][j] !== 'x') sum += parseInt(player.rows[i][j])
+        }
+    }
+    return sum * lastCall;
+}
+
 for (let i = 2; i < input.length; i++) {
     if (input[i] === '') continue;
+    players.push({
+        rows: []
+    })
     for (let j = 0; j < 5; j++) {
-            
+        input[i] = input[i].split('\r')[0];
+        let row = input[i].split(' ');
+        for (let k = 0; k < row.length; k++) {
+            row = row.filter(e => e !== '');
+        }
+        players[players.length - 1].rows.push(row)
         i++;
     }
 }
 
-console.log(calls)
+let hasWinner = false;
+let counter = 0;
+while (!hasWinner) {
+    players.forEach((p, index) => {
+        crossNumber(p, calls[counter]);
+        if (hasBingo(p)) {
+            console.log(getFinalScore(calls[counter], p))
+            hasWinner = true;
+        }
+    })
+    counter++;
+}
+
