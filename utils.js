@@ -22,7 +22,7 @@ const inputToGrid = (filename) => {
     for (let i = 0; i < data.length; i++) {
         const row = [];
         for (let j = 0; j < data[i].length; j++) {
-            row.push(data[i][j])
+            if (data[i][j] !== '\r') row.push(data[i][j])
         }
         grid.push(row);
     }
