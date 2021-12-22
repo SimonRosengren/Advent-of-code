@@ -19,12 +19,8 @@ for (let i = 0; i < input.length; i++) {
 
 console.log("Part I: " + riskScore);
 
-let currentPos = {
-    x: 0,
-    y: 0
-}
-
 let basinMap = [];
+let score = [];
 for (let i = 0; i < input.length; i++) {
   basinMap.push([]);
   for (let j = 0; j < input[i].length; j++) {
@@ -32,28 +28,16 @@ for (let i = 0; i < input.length; i++) {
   }
 }
 
-// const includesPosition = (pos, history) => {
-//   for (let i = 0; i < history.length; i++) {
-//     if (history[i][0] === pos[0] && history[i][1] === pos[1]) return true;
-//   }
-//   return false;
-// };
-
-// const isSamePosition = (pos1, pos2) => {
-//   if (pos1[0] === pos2[0] && pos1[1] == pos2[1]) return true;
-//   return false;
-// };
-
 const isVisited = (pos) => {
   return !!basinMap[pos.x][pos.y];
 };
 
-const isViableStep = (currentPos, potentialPos) => {
+const isViableStep = (newPos, potentialPos) => {
     if (potentialPos.x < 0 || potentialPos.x >= input.length) return false;
     if (potentialPos.y < 0 || potentialPos.y >= input[0].length) return false;
     if (
       input[potentialPos.x][potentialPos.y] < 9 &&
-      input[potentialPos.x][potentialPos.y] > input[currentPos.x][currentPos.y] &&
+      input[potentialPos.x][potentialPos.y] > input[newPos.x][newPos.y] &&
       !isVisited(potentialPos)
     ) {
       return true;
@@ -62,27 +46,24 @@ const isViableStep = (currentPos, potentialPos) => {
 };
   
 const move = (newPos, id) => {
-    currentPos.x = newPos.x;
-    currentPos.y = newPos.y;
-    basinMap[currentPos.x][currentPos.y] = id;
-
-    if (isViableStep(currentPos, { x: currentPos.x + 1, y: currentPos.y })) {
-        move({ x: currentPos.x + 1, y: currentPos.y }, id);
-    } else if (isViableStep(currentPos, { x: currentPos.x - 1, y: currentPos.y })) {
-        move({ x: currentPos.x - 1, y: currentPos.y }, id);
-    } else if (isViableStep(currentPos, { x: currentPos.x, y: currentPos.y + 1 })) {
-        move({ x: currentPos.x, y: currentPos.y + 1 }, id);
-    } else if (isViableStep(currentPos, { x: currentPos.x, y: currentPos.y - 1 })) {
-        move({ x: currentPos.x, y: currentPos.y - 1 }, id);
-    } else {
-        return;
+    basinMap[newPos.x][newPos.y] = id;
+    isNaN(score[id - 1]) ? score[id - 1] = 1 : score[id - 1]++;
+    if (isViableStep(newPos, { x: newPos.x + 1, y: newPos.y })) {
+        move({ x: newPos.x + 1, y: newPos.y }, id);
+    }
+    if (isViableStep(newPos, { x: newPos.x - 1, y: newPos.y })) {
+        move({ x: newPos.x - 1, y: newPos.y }, id);
+    } 
+    if (isViableStep(newPos, { x: newPos.x, y: newPos.y + 1 })) {
+        move({ x: newPos.x, y: newPos.y + 1 }, id);
+    } 
+    if (isViableStep(newPos, { x: newPos.x, y: newPos.y - 1 })) {
+        move({ x: newPos.x, y: newPos.y - 1 }, id);
     }
 };
 
 for (let i = 0; i < lowPoints.length; i++) {
     move({ x: lowPoints[i][0], y: lowPoints[i][1] }, i + 1);
 }
-
-console.table(input);
-console.table(basinMap);
-console.log(lowPoints);
+score = score.sort((v1, v2) => v2 - v1);
+console.log(score[0] * score[1] * score[2]);
