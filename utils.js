@@ -6,6 +6,16 @@ const inputToStringArray = filename => {
     return data;
 }
 
+const isWithinGridBounds = (grid, position) => {
+    if (position.x < grid.length
+        && position.x >= 0
+        && position.y < grid[0].length
+        && position.y >= 0) {
+        return true;
+    }
+    return false;
+}
+
 const inputToIntArray = (filename, separator) => {
     let data = fs.readFileSync(filename, 'utf8');
     data = data.split(separator);
@@ -32,5 +42,6 @@ const inputToGrid = (filename) => {
 module.exports = {
     inputToStringArray,
     inputToIntArray,
-    inputToGrid
+    inputToGrid,
+    isWithinGridBounds
 }
