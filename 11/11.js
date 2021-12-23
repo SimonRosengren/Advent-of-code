@@ -55,9 +55,31 @@ const simulate = () => {
     if (nrOfFlashed) simulate();
 }
 
-for (let i = 0; i < nrOfSteps; i++) {
+const allZeroes = () => {
+    let result = true;
+    octopi.forEach(row => {
+        row.forEach(octopus => {
+            if (octopus.energy !== 0) result =  false;
+        });
+    });
+    return result;
+}
+
+// Pt 1
+// for (let i = 0; i < nrOfSteps; i++) {
+//     resetFlashed();
+//     increaseEnergy();
+//     simulate();
+// }
+// console.log(totalFlashes);
+
+// Pt 2
+let counter = 0;
+while (!allZeroes()) {
+    counter++;
     resetFlashed();
     increaseEnergy();
     simulate();
+    if (counter === 90) console.log('dsada')
 }
-console.log(totalFlashes);
+console.log(counter);
