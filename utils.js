@@ -2,7 +2,7 @@ const fs = require('fs');
 
 const inputToStringArray = filename => {
     let data = fs.readFileSync(filename, 'utf8');
-    data = data.split('\n');
+    data = data.split('\r\n');
     return data;
 }
 

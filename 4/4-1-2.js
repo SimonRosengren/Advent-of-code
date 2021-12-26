@@ -42,7 +42,6 @@ for (let i = 2; i < input.length; i++) {
         rows: []
     })
     for (let j = 0; j < 5; j++) {
-        input[i] = input[i].split('\r')[0];
         let row = input[i].split(' ');
         for (let k = 0; k < row.length; k++) {
             row = row.filter(e => e !== '');

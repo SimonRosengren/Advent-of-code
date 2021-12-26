@@ -9,7 +9,7 @@ for (let i = 0; i < input.length; i++) {
 }
 for (let i = 0; i < inputOutput.length; i++) {
     inputOutput[i] = inputOutput[i].filter(e => e !== '');
-    inputOutput[i][inputOutput[i].length - 1] = inputOutput[i][inputOutput[i].length - 1].split('\r')[0];
+    inputOutput[i][inputOutput[i].length - 1] = inputOutput[i][inputOutput[i].length - 1];
     inputNumbers[i] = inputNumbers[i].filter(e => e !== '');
 }
 const numbers = {

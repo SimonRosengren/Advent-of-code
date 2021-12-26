@@ -17,7 +17,7 @@ for (let i = 0; i < input.length; i++) {
     let split = input[i].split(' -> ');
     let line = {
         start: split[0].split(','),
-        end: (split[1].split('\r')[0]).split(',')
+        end: split[1].split(',')
     }
     line.start[0] = parseInt(line.start[0])
     line.start[1] = parseInt(line.start[1])
