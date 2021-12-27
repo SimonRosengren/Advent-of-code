@@ -2,6 +2,17 @@ const { inputToStringArray, isWithinGridBounds } = require("../utils");
 const input = inputToStringArray("12/input.txt");
 const caves = [];
 const routes = [];
+const pt1 = false; // Set to true for part 1
+
+const hasUsedDoubleVisit = (breadcrumbs) => {
+    if (pt1) return true;
+    let lowerCaseChars = [];
+    for (let i = 0; i < breadcrumbs.length; i++) {
+        if (breadcrumbs[i] === breadcrumbs[i].toLowerCase() && lowerCaseChars.includes(breadcrumbs[i])) return true;
+        lowerCaseChars.push(breadcrumbs[i]);
+    }
+    return false;
+}
 
 input.forEach(path => {
     const split = path.split('-');
@@ -34,7 +45,6 @@ caves.forEach(cave => {
 
 let breadcrumbs = [];
 const crawl = cave => {
-    console.log(cave.id)
     breadcrumbs.push(cave.id)
     for (let i = 0; i < cave.paths.length; i++) {
         if (cave.paths[i] === 'end') {
@@ -46,10 +56,13 @@ const crawl = cave => {
             routes.push(route);
             breadcrumbs.pop();
             continue;
-        } else if (breadcrumbs.includes(cave.paths[i]) && (cave.paths[i] === cave.paths[i].toLowerCase())) {
+        } else if (breadcrumbs.includes(cave.paths[i]) && hasUsedDoubleVisit(breadcrumbs) && (cave.paths[i] === cave.paths[i].toLowerCase())) {
+            continue;
+        } else if (cave.paths[i] === 'start' && breadcrumbs.length > 1) {
             continue;
         } else {
             crawl(caves.find(c => c.id === cave.paths[i]));
+            breadcrumbs.pop();
         }  
     }
     
@@ -57,4 +70,4 @@ const crawl = cave => {
 
 crawl(caves.find(cave => cave.id === 'start'))
 
-console.log(routes);
+console.log(routes.length);
