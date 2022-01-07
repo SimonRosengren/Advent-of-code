@@ -1,5 +1,10 @@
 const fs = require('fs');
 
+const inputToString = filename => {
+    let data = fs.readFileSync(filename, 'utf8');
+    return data;
+}
+
 const inputToStringArray = filename => {
     let data = fs.readFileSync(filename, 'utf8');
     data = data.replaceAll('\r', '').split('\n');
@@ -40,6 +45,7 @@ const inputToGrid = (filename) => {
 }
 
 module.exports = {
+    inputToString,
     inputToStringArray,
     inputToIntArray,
     inputToGrid,
