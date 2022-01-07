@@ -2,17 +2,16 @@ const { inputToGrid, isWithinGridBounds } = require("../utils");
 const input = inputToGrid("15/input.txt");
 const grid = []
 let prioQueue = [];
-
+const growGrid = 5; // Set to 1 for Part I
 let currentPos = {
     x: 0,
     y: 0
 }
 
-
-for (let k = 0; k < 5; k++) {
+for (let k = 0; k < growGrid; k++) {
     for (let i = 0; i < input.length; i++) {
         grid.push([])
-        for (let h = 0; h < 5; h++) {
+        for (let h = 0; h < growGrid; h++) {
             for (let j = 0; j < input[i].length; j++) {
                 grid[i + (k * input.length)].push({
                     pos: {
