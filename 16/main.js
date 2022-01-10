@@ -1,8 +1,7 @@
 const { inputToString } = require("../utils");
-const { hexaToBinary, binaryToNumber } = require("./helpers");
+const { hexaToBinary, binaryToNumber, finished } = require("./helpers");
+const { readLiteralValue, openPackage } = require('./packageReader');
 let input = inputToString("16/input.txt");
-const versionLength = 3;
-const typeIdLength = 3;
 
 (() => {
     let converted = '';
@@ -13,13 +12,11 @@ const typeIdLength = 3;
     input = converted;
 })();
 
-
-const readLiteralPackage = binary => {
-
-}
-
 let ptr = 0;
+let remaining = input.slice(ptr);
 
-while (true) {
-    
-}
+openPackage(input);
+
+// while (!finished(remaining)) {
+//     const a = 1;
+// }

@@ -13,8 +13,13 @@ const binaryToNumber = binary => {
     return parseInt(binary, 2)
 }
 
+const finished = (binary) => {
+    return (binary.length < 1 || !binary.includes('1'))
+}
+
 module.exports = {
     padBinary,
     hexaToBinary,
-    binaryToNumber
+    binaryToNumber,
+    finished
 }
