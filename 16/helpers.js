@@ -10,6 +10,8 @@ const hexaToBinary = hexa => {
 }
 
 const binaryToNumber = binary => {
+    if (parseInt(binary, 2) === '')
+        console.log('')
     return parseInt(binary, 2)
 }
 

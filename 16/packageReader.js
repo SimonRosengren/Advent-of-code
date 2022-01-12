@@ -1,12 +1,10 @@
 // All methods assumes that binary starts where method should start
 const { binaryToNumber } = require("./helpers");
 
-let test = 0;
+let pt1 = 0;
 
 const readVersionNumber = binary => {
-    test += binaryToNumber(`${binary[0]}${binary[1]}${binary[2]}`);
-    console.log(test)
-
+    pt1 += binaryToNumber(`${binary[0]}${binary[1]}${binary[2]}`);
     return {
         result: binaryToNumber(`${binary[0]}${binary[1]}${binary[2]}`),
         change: 3
@@ -25,6 +23,36 @@ const readLengthTypeId = binary => {
         result: binaryToNumber(`${binary[0]}`),
         change: 1
     }
+}
+
+const translateOperator = ID => {
+    let operator;
+    switch (ID) {
+        case 0:
+            operator = values => values.reduce((a, b) => a + b)
+            break;
+        case 1:
+            operator = values => values.reduce((a, b) => a * b)
+            break;
+        case 2:
+            operator = values => values.reduce((a, b) => Math.min(a, b))
+            break;
+        case 3:
+            operator = values => values.reduce((a, b) => Math.max(a, b))
+            break;
+        case 5:
+            operator = values => values[0] > values[1] ? 1 : 0;
+            break;
+        case 6:
+            operator = values => values[0] < values[1] ? 1 : 0;
+            break;
+        case 7:
+            operator = values => values[0] === values[1] ? 1 : 0;
+            break;
+        default:
+            break;
+    }
+    return operator;
 }
 
 const readLiteralValue = binary => {
@@ -51,6 +79,7 @@ const readLiteralValue = binary => {
 
 const openPackage = binary => {
     let change = 0;
+    let result = 0;
     let version = readVersionNumber(binary);
     binary = binary.slice(version.change)
     change += version.change;
@@ -74,12 +103,14 @@ const openPackage = binary => {
             length = binaryToNumber(length);
             binary = binary.slice(11);
             change += 11;
+            let values = [];
             for (let i = 0; i < length; i++) {
                 let res = openPackage(binary);
                 binary = binary.slice(res.change);
-                change += res.change; // correct here aswell?
-                // let val = res.result; // What do I do with this data?           
+                change += res.change;
+                values.push(res.result);
             }
+            result = translateOperator(ID)(values)
         } else {
             let length = '';
             for (let i = 0; i < 15; i++) {
@@ -88,25 +119,27 @@ const openPackage = binary => {
             length = binaryToNumber(length);
             binary = binary.slice(15);
             change += 15;
-            change += length; // lägga length här också? Detta borde vara length på open package
+            change += length;
             let bitsRead = 0;
+            let values = [];
             while (bitsRead < length) {
-                let res = openPackage(binary) // val here
+                let res = openPackage(binary)
                 bitsRead += res.change;
+                values.push(res.result);
                 binary = binary.slice(res.change)
             }
-
-
+            result = translateOperator(ID)(values)
         }
     } else {
         let lit = readLiteralValue(binary);
         change += lit.change;
         binary = binary.slice(lit.change);
-        // Do something with result here?
+        result = lit.result;
     }
     return {
-        result: '',
-        change
+        result,
+        change,
+        pt1
     }
 }
 

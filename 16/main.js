@@ -1,6 +1,6 @@
 const { inputToString } = require("../utils");
-const { hexaToBinary, binaryToNumber, finished } = require("./helpers");
-const { readLiteralValue, openPackage } = require('./packageReader');
+const { hexaToBinary } = require("./helpers");
+const { openPackage } = require('./packageReader');
 let input = inputToString("16/input.txt");
 
 (() => {
@@ -12,11 +12,4 @@ let input = inputToString("16/input.txt");
     input = converted;
 })();
 
-let ptr = 0;
-let remaining = input.slice(ptr);
-
-openPackage(input);
-
-// while (!finished(remaining)) {
-//     const a = 1;
-// }
+console.log(openPackage(input))
