@@ -5,32 +5,19 @@ const x = input.split(', ')[0].split('x=')[1].split('..');
 const y = input.split(', ')[1].split('y=')[1].split('..');
 
 let pt2 = 0;
-const a = 2;
+
 const getHeightFromVelociy = yVel => {
     return (Math.abs(yVel) - 1) * (Math.abs(yVel) / 2);
 }
 
-const getMinVelX = (startX, minX) => {
-    return Math.round(((minX - startX) / 2) + 0.5);
-}
-
-const getVelocityWhenBackToStart = startVel => {
-    return {
-        x: Math.abs(startVel.x - ((startVel.y * 2) + 1)),
-        y: startVel.y + 1
-    }
-}
-
-const miss = pos => { // wrong here 6,3
-    if (Math.abs(pos.y) > Math.abs(parseInt(y[0])) || pos.x > parseInt(x[1])) return true;
+const miss = pos => {
+    if (pos.y < parseInt(y[0]) || pos.x > parseInt(x[1])) return true;
     return false;
 }
 
 const checkForHit = (start, velocity) => {
     let currentPos = { x: start.x, y: start.y }
     let currentVelocity = { x: velocity.x, y: velocity.y }
-    let yCounter = 0;
-    let xCounter = 0;
     while (!miss(currentPos)) {
         currentPos.x += currentVelocity.x;
         currentPos.y += currentVelocity.y;
@@ -51,4 +38,4 @@ for (let i = 0; i < parseInt(x[1]) + 1; i++) {
         if (checkForHit({ x: 0, y: 0 }, { x: i, y: j })) pt2++;
     }
 }
-console.log(pt2)
+console.log('Part II: ' + pt2);
