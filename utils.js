@@ -11,6 +11,23 @@ const inputToStringArray = filename => {
     return data;
 }
 
+const inputWithLineBreaksTo2dStringArray = filename => {
+    let data = fs.readFileSync(filename, 'utf8');
+    data = data.replaceAll('\r', '').split('\n');
+
+    let combined = []
+    let current = []
+    data.forEach(s => {
+        if (s === '') {
+            combined.push(current)
+            current = []
+        } else {
+            current.push(s)   
+        }
+    });
+    return combined
+}
+
 const isWithinGridBounds = (grid, position) => {
     if (position.x < grid.length
         && position.x >= 0
@@ -49,5 +66,6 @@ module.exports = {
     inputToStringArray,
     inputToIntArray,
     inputToGrid,
-    isWithinGridBounds
+    isWithinGridBounds,
+    inputWithLineBreaksTo2dStringArray
 }
